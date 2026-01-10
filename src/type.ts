@@ -14,6 +14,7 @@ export type SessionIntent =
   | { type: "task"; taskId: string };
 
 export type BootKey =
+  | "engine"
   | "model"
   | "settings"
   | "worker"

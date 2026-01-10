@@ -1,4 +1,4 @@
-import type { TimerPlugin, TimerBus } from "./index";
+import type { TimerPlugin, TimerBus } from "./timer.types";
 
 export class TimerPluginRegistry {
   private plugins = new Map<string, TimerPlugin>();

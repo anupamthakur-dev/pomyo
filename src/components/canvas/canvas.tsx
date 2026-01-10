@@ -1,13 +1,12 @@
 import * as THREE from "three";
-import { Canvas, useThree } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import {
-  CameraControls,
   Environment,
   PerspectiveCamera,
 } from "@react-three/drei";
 import { memo, useEffect, useRef } from "react";
-import cameraStore from "../../store/cameraStore";
-import { a, useSpring, useSpringRef, animated } from "@react-spring/three";
+import { pomyoCamera } from "../../core/controllers";
+import { useSpring, animated } from "@react-spring/three";
 
 const CanvasContainer: React.FC<{ children: THREE.Object3D }> = ({
   children,
@@ -67,8 +66,8 @@ function CameraBinder() {
 
   useEffect(() => {
     if (cameraRef.current) {
-      cameraStore.setCamera(cameraRef.current);
-      cameraStore.setApi(api);
+      pomyoCamera.setCamera(cameraRef.current);
+      pomyoCamera.setApi(api);
     }
   }, []);
 

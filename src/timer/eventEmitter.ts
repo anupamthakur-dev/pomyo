@@ -1,14 +1,15 @@
 import type { Unsubscribe, Listener} from "../type";
-import type {TimerEvent} from './index'
+import type {TimerEventMessage} from './timer.types'
 export class EventEmitter {
-  private _events: Record<TimerEvent['type'], Listener[]> = {
+  private _events: Record<TimerEventMessage['type'], Listener[]> = {
     tick: [],
     complete: [],
     status: [],
     init: [],
+    ready:[]
   };
 
-  on(eventName: TimerEvent['type'], callback: Listener): Unsubscribe {
+  on(eventName: TimerEventMessage['type'], callback: Listener): Unsubscribe {
     if (!this._events[eventName]) this._events[eventName] = [];
     this._events[eventName].push(callback);
 
@@ -19,7 +20,7 @@ export class EventEmitter {
     };
   }
 
-  emit(eventName: TimerEvent['type'], ...args: any[]) {
+  emit(eventName: TimerEventMessage['type'], ...args: any[]) {
     if (!this._events[eventName]) return;
     this._events[eventName].forEach((l) => l(...args));
   }

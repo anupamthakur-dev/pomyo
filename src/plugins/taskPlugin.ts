@@ -1,4 +1,6 @@
-import type { TimerPlugin,TimerBus } from "../timer/index";
+import { useTodoStore } from "../store/todo.store";
+import type { TimerPlugin,TimerBus } from "../timer/timer.types";
+
 export class TaskPlugin implements TimerPlugin {
   id = "task-plugin";
   private unsub?: () => void;
@@ -11,8 +13,7 @@ export class TaskPlugin implements TimerPlugin {
   attach(bus: TimerBus) {
     this.unsub = bus.subscribe("complete", (e) => {
       if (e.mode === "focus") {
-        // update task progress
-        console.log("Pomodoro completed for task", this.taskId);
+        useTodoStore.getState().recordCompletion(this.taskId)
       }
     });
   }

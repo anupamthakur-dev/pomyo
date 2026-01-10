@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSettingsStore } from "../store/settings.store";
-import { useBoot } from "../context/bootProvider";
+
+import { useBootStore } from "../store/boot.store";
 
 export function SettingsHydrationGate() {
-  const { markReady } = useBoot();
+  const markReady  = useBootStore(s=>s.markReady);
 const [hydrated, setHydrated] = useState(
   useSettingsStore.persist.hasHydrated()
 );

@@ -27,9 +27,10 @@ export default function ActiveTask() {
 }
 
 function Task({ task }: { task: ITodo }) {
-  const { clearActiveTodo, completeActiveTodo } = useActiveTodoTimer();
+  const { markTaskCompleted,deactivateTask } = useActiveTodoTimer();
   return (
     <div className="task">
+     
       <div className="task_session">
         <div className="task_session_digit">{task.completedPomo}</div>
         <div className="task_session_label">done</div>
@@ -39,7 +40,7 @@ function Task({ task }: { task: ITodo }) {
         <button
           className="btn btn-small"
           title="mark completed"
-          onClick={() => completeActiveTodo(task.id)}
+          onClick={markTaskCompleted}
         >
           <Icon name="Check" />
         </button>
@@ -47,7 +48,7 @@ function Task({ task }: { task: ITodo }) {
           <Icon name="ListTodo" />
         </button>
       </div>
-      <button className="btn btn-small task-remover" onClick={clearActiveTodo}>
+      <button className="btn btn-small task-remover" onClick={deactivateTask}>
         <Icon name="X" />
       </button>
     </div>

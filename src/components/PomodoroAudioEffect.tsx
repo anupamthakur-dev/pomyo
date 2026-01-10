@@ -1,35 +1,57 @@
+import { useBootStore } from '../store/boot.store.ts';
 import { useEffect } from 'react';
 import gearSound from "../assets/gear3.mp3";
 import sfxs from '../uitls/sfx.json';
-import { usePomodoroAction } from '../context/pomodoroProvider';
-import pomoAudio from "../store/soundStore.ts";
-import type { PostMessagePayload } from '../type';
+import { pomyoSound } from '../core/controllers.ts';
+
 import { playComplete, playTicking, stopTicking } from '../uitls/audio';
-import { useBoot } from '../context/bootProvider.tsx';
+
+import { usePomyoStore } from '../core/timer.ts';
+import type {TimerEventMap } from '../timer/timer.types.ts';
 
 
 export default function PomodoroAudioEffects() {
-    const { subscribe, isReady } = usePomodoroAction();
-    const {markReady} = useBoot();
+    const subscribe= usePomyoStore(s=>s.subscribeToEvent);
+    const markReady = useBootStore(s=>s.markReady);
+
+   useEffect(() => {
+  let cancelled = false;
+
+  const unlockHandler = () => {
+    pomyoSound.unlock();
+  };
+
+  async function initSounds() {
+    const sounds = {
+      ...sfxs.ticking,
+      ...sfxs.complete,
+      gear: gearSound,
+    };
+
+    try {
+      await pomyoSound.loadAll(sounds);
+
+      if (!cancelled) {
+        markReady("sounds"); // ✅ fires ONLY after all sounds loaded
+      }
+    } catch (err) {
+      console.error("Failed to load sounds", err);
+    }
+  }
+
+  initSounds();
+
+  document.body.addEventListener("click", unlockHandler);
+
+  return () => {
+    cancelled = true;
+    document.body.removeEventListener("click", unlockHandler);
+  };
+}, [markReady, pomyoSound]);
+
 
     useEffect(() => {
-        const sounds = { ...sfxs.ticking, ...sfxs.complete, gear: gearSound };
-        pomoAudio.loadAll(sounds);
-        markReady('sounds');
-
-        document.body.addEventListener("click", () => {
-            pomoAudio.unlock();
-        });
-
-        return () => {
-            document.body.removeEventListener("click", () => {
-                pomoAudio.unlock();
-            });
-        };
-    }, []);
-
-    useEffect(() => {
-        const unsub = subscribe("status", (payload: PostMessagePayload<'status'>['payload']) => {
+        const unsub = subscribe("status", (payload:TimerEventMap['status']) => {
             const { status } = payload
             if (status === "ticking") {
                 playTicking();
@@ -48,6 +70,6 @@ export default function PomodoroAudioEffects() {
             unsub_complete();
             unsub();
         }; // cleanup to prevent leaks
-    }, [isReady]);
+    }, [subscribe]);
     return null
 }

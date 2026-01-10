@@ -1,92 +1,52 @@
-import {  useEffect } from "react";
-import { usePomodoroAction } from "../context/pomodoroProvider";
+import {  useCallback, useEffect } from "react";
+import { usePomyoStore } from "../core/timer";
+import { pluginRegistry } from "../core/timer";
+import { TaskPlugin } from "../plugins/taskPlugin";
 import { useTodoStore } from "../store/todo.store";
-import type { PostMessagePayload, UUIDTypes } from "../type";
 
 
 export default function useActiveTodoTimer() {
   const {
     status,
-    initTaskSession,
-    initFreeSession,
-    subscribe,
-    isReady,
-  } = usePomodoroAction();
+    initTaskPomyo,
+    reset,
+    subscribeToEvent:subscribe,
+  } = usePomyoStore();
+  const {activeTodoId,deactivateActiveTodo,markCompleted} = useTodoStore();
 
-  const {activeTodoId,activateTodo, deactivateActiveTodo, markCompleted, updateTodo } =
-    useTodoStore();
-  const getTodos = useTodoStore.getState().getTodos;
+  const isTimerActive = status === 'ticking';
+  
+  const markTaskCompleted = useCallback(()=>{
+    if(isTimerActive) return;
+    if(!activeTodoId) return;
+    markCompleted(activeTodoId)
+  },[isTimerActive,activeTodoId])
 
-  const isTimerActive = status === "ticking";
-
-  const startTodo = (id: UUIDTypes)=>{
-
+  const deactivateTask = ()=>{
+    reset();
     deactivateActiveTodo();
-      initFreeSession();
-   
-    activateTodo(id);
-         initTaskSession(id);
-  }
-
-  const clearActiveTodo = () => {
-    if (isTimerActive) return;
-
-    deactivateActiveTodo();
-    initFreeSession();
-  };
-
-  const completeActiveTodo = (id: UUIDTypes) => {
-    if (isTimerActive) return;
-   
-     
-    clearActiveTodo();
-    markCompleted(id);
-
-   
-  };
-
-  const incrementCompletedPomo = ({id,mode}:PostMessagePayload<'complete'>['payload']) => {
-    if (!activeTodoId) return;
-    console.log(id,mode)
-    if(mode!== 'focus') return;
-
-    const todo = getTodos().find((t) => t.id === activeTodoId);
-    if (!todo) return;
-
-    const nextCompleted = todo.completedPomo + 1;
-
-    updateTodo(todo.id, { completedPomo: nextCompleted });
-
-    if (nextCompleted >= todo.estimatedPomo) {
-      deactivateActiveTodo();
-      initFreeSession();
-    }
+    pluginRegistry.unregister('task-plugin');
   }
 
   useEffect(()=>{
-    console.log("hook create");
-    const activeTodo = getTodos().find((t)=> t.id=== activeTodoId);
+    if(!activeTodoId) return;
+    
+    const task = useTodoStore.getState().getTodos().find( t=>t.id === activeTodoId);
 
-    if(!activeTodo) return;
+    if(!task) return;
 
-     initTaskSession(activeTodo.id,activeTodo.focusDuration);
-  
+    pluginRegistry.register(new TaskPlugin(activeTodoId));
+    initTaskPomyo(task.focusDuration);
+
     return ()=>{
-      console.log("hook destroyed")
+      pluginRegistry.unregister('task-plugin');
     }
-  },[activeTodoId])
-  useEffect(() => {
-    if (!isReady) return;
 
-
-    return subscribe("complete", (payload) => {
-      incrementCompletedPomo(payload);
-    });
-  }, [subscribe, isReady]);
-
+  },[activeTodoId,initTaskPomyo,pluginRegistry])
+   
   return {
-    startTodo,
-    clearActiveTodo,
-    completeActiveTodo,
-  };
+         isTimerActive,
+         markTaskCompleted,
+         deactivateTask
+  }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { usePomodoro, usePomodoroAction } from "../../context/pomodoroProvider";
+
 
 import GhostBtn from "../buttons/ghostBtn";
 
@@ -8,12 +8,14 @@ import { Icon } from "../icon";
 import { useTheme } from "../../context/themeProvider";
 import { useTodoPanel } from "../../store/UI/todoPanel.store";
 import IconBtn from "../buttons/IconButton";
-import type { PostMessagePayload } from "../../type";
+
 import ModeTimeline from "../ModeTimeline";
+import { usePomyoStore } from "../../core/timer";
+import type { EventPayload } from "../../timer/timer.types";
 
 export default function TopTools({ timerModal }: { timerModal: boolean }) {
-  const { mode, toggleFlowMode, flowMode } = usePomodoro();
-  const { subscribe, isReady } = usePomodoroAction();
+  const { toggleFlowMode, flowMode, subscribeToEvent : subscribe } = usePomyoStore();
+ 
   const { theme, toggleTheme } = useTheme();
   const toggleTodoPanel = useTodoPanel((state)=> state.toggle);
  
@@ -21,7 +23,7 @@ export default function TopTools({ timerModal }: { timerModal: boolean }) {
   const [isTicking, setIsTicking] = useState<boolean>(false);
 
   useEffect(() => {
-    const unsub = subscribe("status", (payload:PostMessagePayload<'status'>['payload']) => {
+    const unsub = subscribe("status", (payload:EventPayload<'status'>['payload']) => {
       const {status} = payload
       if (status === "ticking") {
         setIsTicking(true);
@@ -30,7 +32,7 @@ export default function TopTools({ timerModal }: { timerModal: boolean }) {
       }
     });
     return () => unsub();
-  }, [isReady]);
+  }, [subscribe]);
 
   return (
     <div

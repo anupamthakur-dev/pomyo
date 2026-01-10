@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { usePomodoroAction } from "../context/pomodoroProvider";
+
 import {
   convertToMinutes,
     formatTimerValue,
@@ -7,8 +7,10 @@ import {
 } from "../uitls/helper";
 
 import '../styles/bigDigit.css'
-import type { PostMessagePayload } from "../type";
+
 import { useSettingsStore } from "../store/settings.store";
+import { usePomyoStore } from "../core/timer";
+import type { EventPayload } from "../timer/timer.types";
 
 
 function BigDigit() {
@@ -25,14 +27,14 @@ function BigDigit() {
       return convertToMinutes(modeTime);
     }
   );
-  const { subscribe, isReady } = usePomodoroAction();
+  const  subscribe  = usePomyoStore(s=> s.subscribeToEvent);
   
 
   // Keep track of last time to avoid redundant updates
   const lastTimeRef = useRef<{ min: number; sec: number } | null>(null);
 
   useEffect(() => {
-    if (!isReady) return;
+    
 
     // --- tick subscription ---
     const unsub_tick = subscribe("tick", (payload) => {
@@ -52,7 +54,7 @@ function BigDigit() {
     });
 
     // --- init subscription ---
-    const unsub_init = subscribe("init", (payload:PostMessagePayload<'init'>['payload']) => {
+    const unsub_init = subscribe("init", (payload:EventPayload<'init'>['payload']) => {
       const {duration} = payload
       const { min, sec } = convertToMinutes(duration);
       setTimer({min:null,sec:null})
@@ -67,7 +69,7 @@ function BigDigit() {
       
       lastTimeRef.current = null;
     };
-  }, [isReady]);
+  }, [subscribe]);
 
   
 

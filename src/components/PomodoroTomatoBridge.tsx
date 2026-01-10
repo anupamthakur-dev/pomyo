@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { usePomodoroAction } from "../context/pomodoroProvider";
+
 import { useTomato } from "../context/tomatoProvider";
+import { usePomyoStore } from "../core/timer";
 
 export default function PomodoroTomatoBridge() {
-  const { subscribe, isReady } = usePomodoroAction();
+  const subscribe = usePomyoStore(s => s.subscribeToEvent);
   const {animationController} = useTomato();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function PomodoroTomatoBridge() {
       unsubInit();
       unsubTick();
     };
-  }, [subscribe, animationController, isReady]);
+  }, [subscribe, animationController]);
 
   return null; // headless
 }

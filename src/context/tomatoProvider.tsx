@@ -1,10 +1,11 @@
 // TomatoContext.tsx
 import { createContext, useContext, useEffect, useMemo } from "react";
-import tomatoStore from "../store/tomatoStore";
+import { tomatoAnimate } from "../core/controllers";
 import { TomatoAnimationController } from "../controller/tomatoController";
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
-import { useBoot } from "./bootProvider";
+
+import { useBootStore } from "../store/boot.store";
 
 const TomatoContext = createContext<{
   animationController: TomatoAnimationController | null;
@@ -15,18 +16,18 @@ export const TomatoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { nodes } = useGLTF("/pomodoro.glb");
-  const { markReady } = useBoot();
+  const  markReady  = useBootStore(s=>s.markReady);
   useEffect(() => {
-    if (tomatoStore && nodes) {
+    if (tomatoAnimate && nodes) {
       markReady('model');
     }
   }, [])
   const value = useMemo(
     () => ({
-      animationController: tomatoStore,
+      animationController: tomatoAnimate,
       model: nodes,
     }),
-    [tomatoStore, nodes]
+    [tomatoAnimate, nodes]
   );
   return (
     <TomatoContext.Provider value={value}>{children}</TomatoContext.Provider>

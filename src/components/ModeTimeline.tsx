@@ -1,10 +1,10 @@
-import { usePomodoro } from "../context/pomodoroProvider";
-import { animated, useTransition } from "@react-spring/web";
+import { usePomyoStore } from "../core/timer";
+import { decideNextSession } from "../uitls/helper";
 
 export default function ModeTimeline() {
-  const { mode, decideNextSession } = usePomodoro();
+  const {mode, focusSessionCompleted} = usePomyoStore();
   const activeMode = mode;
-  const nextMode = decideNextSession(mode);
+  const nextMode = decideNextSession(mode,focusSessionCompleted);
   const modeLabels = {
     focus: "Focus",
     "short-break": "Short break",

@@ -1,6 +1,6 @@
 import { useModal } from "../context/modalProvider";
 import type { ITodo, MODE } from "../type";
-import cameraStore from "../store/cameraStore";
+import { pomyoCamera } from "../core/controllers";
 import { useTodoPanel } from "../store/UI/todoPanel.store";
 import useTimerActions from "./useTimerActions";
 import { useCallback } from "react";
@@ -22,13 +22,13 @@ export default function useBottomTool() {
   const isSetTimerActive = modal.type === "set-timer"? true: false;
 
   const closeSetTimer = () => {
-    if (!cameraStore.api || !cameraStore.camera) return;
-    cameraStore.wideShot();
+    if (!pomyoCamera.api || !pomyoCamera.camera) return;
+    pomyoCamera.wideShot();
   };
 
   const setTimer =  (mode: MODE) => {
-    if (!cameraStore.api || !cameraStore.camera) return;
-    cameraStore.closeShot(); // zoom in
+    if (!pomyoCamera.api || !pomyoCamera.camera) return;
+    pomyoCamera.closeShot(); // zoom in
     closeTodoPanel();
     open({ type: "set-timer", mode, onClose: closeSetTimer });
   };

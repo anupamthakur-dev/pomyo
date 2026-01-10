@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+
 import { Icon } from "../icon";
 import IconBtn from "../buttons/IconButton";
 import { useModal } from "../../context/modalProvider";
 import PlayContainer from "../PlayContainer";
 import GhostBtn from "../buttons/ghostBtn";
-import { usePomodoro, usePomodoroAction } from "../../context/pomodoroProvider";
+
 import ActiveTask from "../todos/ActiveTask";
+import { usePomyoStore } from "../../core/timer";
 
 export default function BottomTools({
   timerModal,
@@ -15,7 +16,7 @@ export default function BottomTools({
   bottomActions: any;
 }) {
   const { close } = useModal();
-  const { mode } = usePomodoro();
+  const  mode  = usePomyoStore(s=>s.mode);
 
   return (
     <div

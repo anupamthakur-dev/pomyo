@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { usePomodoroAction } from "../context/pomodoroProvider";
+import { usePomyoStore } from "../core/timer";
 
 export default function useTimerActions() {
-  const { startCurrentSession, resume, pause, reset, status } =
-    usePomodoroAction();
+  const { start, resume, pause, reset, status } =
+    usePomyoStore();
 
   const [hasStartedOnce, setHasStartedOnce] = useState(false);
 
@@ -18,7 +18,7 @@ export default function useTimerActions() {
     if (!canStart) return;
 
     setHasStartedOnce(true);
-    startCurrentSession();
+    start();
   }
 
   function resetTimer() {

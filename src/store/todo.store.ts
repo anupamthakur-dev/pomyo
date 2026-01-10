@@ -10,6 +10,7 @@ export interface ITodoStore {
   addTodo(todo: ITodo): void;
   updateTodo(id: UUIDTypes, data: Partial<ITodo>): void;
   deleteTodo(id: UUIDTypes): void;
+  recordCompletion(id:UUIDTypes):void;
 
   activateTodo(id: UUIDTypes): void;
   deactivateActiveTodo(): void;
@@ -66,6 +67,21 @@ export const useTodoStore = create<ITodoStore>((set, get) => ({
     if (activeTodoId && activeTodoId === todo.id) {
       set({ activeTodoId: null });
     }
+  },
+  recordCompletion(id) {
+    set((state) => {
+      const nextTodos = state.todos.map((todo) => {
+        if (todo.id !== id) return todo;
+
+        const updateTodo:ITodo = { ...todo,completedPomo:todo.completedPomo + 1 };
+
+        return {
+          ...updateTodo,
+          status: resolveTodoStatus(updateTodo),
+        };
+      });
+      return { todos: nextTodos };
+    })
   },
   getTodos: ()=> get().todos
 }));

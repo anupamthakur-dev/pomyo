@@ -35,9 +35,7 @@ export abstract class TimerController implements ITimercontroller {
   }
 
  
-  public get id():string | null {
-    return this._id
-  }
+  
   public get mode(): MODE | null {
     return this._mode;
   }

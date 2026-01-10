@@ -1,6 +1,6 @@
 // timer.worker.ts (patched resume behavior)
-import type {  TimerStatus } from "../type";
-import type {  WorkerMessage } from "./timer.types";
+import type {  ITimerInit, TimerStatus } from "../type";
+import type {  TimerCommandMessage } from "./timer.types";
 import { TimerController } from "../controller/timerController";
 
 class MyTimer extends TimerController {
@@ -10,7 +10,7 @@ class MyTimer extends TimerController {
 
   protected _onTimerFinish(): void {
     let payload = {
-      id: this.id,
+      
       mode: this.mode,
     };
     postMessage({ type: "complete", payload });
@@ -26,12 +26,14 @@ class MyTimer extends TimerController {
 }
 
 const pomodoro = new MyTimer();
+postMessage({type:'ready'});
 
-self.onmessage = (message: MessageEvent<WorkerMessage>) => {
-  const {type, payload} = message.data;
-  switch (type) {
+self.onmessage = (message: MessageEvent<TimerCommandMessage>) => {
+  const command = message.data;
+  console.log(command)
+  switch (command.type) {
     case "INIT":
-      pomodoro.init(payload);
+      pomodoro.init(command.payload as ITimerInit);
 
       break;
     case "START":
@@ -47,10 +49,10 @@ self.onmessage = (message: MessageEvent<WorkerMessage>) => {
       break;
 
     case "RESET":
-      pomodoro.reset(payload.duration);
+      pomodoro.reset(command.payload.duration);
       break;
 
     default:
-      console.warn("Unknown worker command:", type);
+      console.warn("Unknown worker command:", command);
   }
 };
