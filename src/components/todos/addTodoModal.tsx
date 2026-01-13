@@ -11,15 +11,27 @@ import { useTodoStore } from "../../store/todo.store";
 import type { ITodo } from "../../type";
 import Stepper from "./Stepper";
 import { useSettingsStore } from "../../store/settings.store";
+import { useNotifyStore } from "../../store/notify.store";
 
 export default function AddTodoModal({close}:{close:()=>void}) {
   const addTodo = useTodoStore((state) => state.addTodo);
   const getSetting  = useSettingsStore.getState().getSetting;
+  const notify = useNotifyStore(s=> s.notify);
   const [sessions, setSessions] = useState<number>(1);
   const [title, setTitle] = useState<string>("");
 
   const handleAddTodo = useCallback(() => {
-    if (title.trim().length === 0 || sessions === 0) return;
+    
+
+    if(title.trim().length === 0 ){
+     notify({
+      id:generateUUID(),
+      title:'Invalid Input',
+      message:'Title must not be empty.',
+      type:'info'
+     })
+     return;
+    }
 
     const newTodo: ITodo = {
       id: generateUUID(),
@@ -31,6 +43,12 @@ export default function AddTodoModal({close}:{close:()=>void}) {
     };
 
     addTodo(newTodo);
+    notify({
+      id:generateUUID(),
+      title:'Task created',
+      message:title,
+      type:'success'
+     })
   }, [sessions, title]);
 
   return (

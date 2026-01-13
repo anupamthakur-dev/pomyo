@@ -10,7 +10,6 @@ export default function useActiveTodoTimer() {
     status,
     initTaskPomyo,
     reset,
-    subscribeToEvent:subscribe,
   } = usePomyoStore();
   const {activeTodoId,deactivateActiveTodo,markCompleted} = useTodoStore();
 

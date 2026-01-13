@@ -75,6 +75,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: var(--font-sm);
+  
 }
 .todo_status {
   width: fit-content;
@@ -129,7 +130,7 @@
   width: 100%;
   height: fit-content;
   max-width: 100vw;
-  max-height: 100vh; 
+  max-height: 100vh;
   background-color: var(--bg);
   border-radius: var(--space-sm);
   box-shadow: 2px 2px 10px 4px var(--shadow);
@@ -146,7 +147,7 @@
 .todo-modal_foot {
   padding: var(--space-md) var(--space-lg);
 }
-.todo-modal  .todo_title {
+.todo-modal .todo_title {
   --border-col: var(--border-color);
   outline: none;
   border: none;
@@ -157,7 +158,7 @@
 
   margin-bottom: var(--space-md);
   padding: var(--space-sm);
-  background-color:var(--border-color);
+  background-color: var(--border-color);
   border-bottom: 2px solid var(--border-col);
 }
 .todo_title:focus {
@@ -222,7 +223,7 @@
   font-size: var(--font-xs);
 }
 
-.taskFocusDurationSelector{
+.taskFocusDurationSelector {
   font-size: var(--font-sm);
   border: 1px solid var(--border-color);
   border-radius: var(--space-sm);
@@ -232,96 +233,119 @@
 .taskFocusDurationSelector .head {
   color: var(--accent);
 }
-.taskFocusDurationSelector input[type='radio']{
-  margin-right: var(--space-sm) ;
-   cursor: pointer;
+.taskFocusDurationSelector input[type="radio"] {
+  margin-right: var(--space-sm);
+  cursor: pointer;
 }
 
-.active-task{
+.active-task-holder {
   position: absolute;
-  width: fit-content;
-  text-wrap: nowrap;
+  min-width: 320px;
+  max-width: 520px;
+
   left: 50%;
   bottom: 125%;
   transform: translateX(-50%);
-  
+
   backdrop-filter: blur(4px);
   border-radius: var(--space-sm);
-  
+
   font-size: var(--font-sm);
   line-height: 125%;
   border: 2px dashed var(--border-color);
- 
 }
-.active-task.is-active{
-  border: unset;
-  background-color: hsl(from var(--border-color) h s 30%);
-}
-.active-task_head{
-  font-size: var(--font-xs);
-  }
-.active-task_body{
-  padding: var(--space-md) var(--space-lg);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-sm);
- }
-.active-task_tools{
- display: flex;
-  height: auto;
-  width: 100%;
-  background-color: var(--accent);
- 
-  overflow: hidden;
-  padding: var(--space-xs) var(--space-sm);
-}
-.task{
-  display: flex;
-  gap: var(--space-lg);
-  
-}
-.task_session{
-  padding-right: var(--space-sm);
-  text-align: center;
-  border-right: 1px solid var(--border-color);
-}
-.task_session_digit{
-  color: var(--accent);
-  font-size: var(--font-lg);
-}
-.task_session_label{
 
- font-size: var(--font-xs);
- color: var(--text-light);
+.active-task-holder .no-active-task {
+  padding: var(--space-sm);
+  color: var(--text-light);
+  font-size: var(--font-xs);
+  text-align: center;
 }
-.task_title{
-  align-self: center;
+.no-active-task_link{
+  font-size: var(--font-sm);
+  font-weight: normal;
+  color: var(--accent);
 }
-.task_actions{
+.no-active-task_link:hover{
+  opacity: 0.8;
+}
+.active-task-holder.is-active {
  
-   display: flex;
+  border:unset;
+ 
+}
+
+.task {
+  width: 100%;
+   padding: var(--space-sm) var(--space-lg);
+    background-color: hsl(from var(--border-color) h s 30%);
+    border-radius: var(--space-sm);
+  overflow: hidden;
+ 
+}
+.task-completed{
+  display: grid;
+  grid-template-columns: 20% 80%;
+   padding-block: var(--space-xs) ;
+   background: var(--bg-light);
+   border-radius: var(--space-sm);
+  animation: pulseOut 700ms cubic-bezier(.2,.8,.2,1) forwards;
+  will-change: transform, box-shadow, opacity;
+}
+
+.task-completed_icon{
+  color: var(--level-low);
+ 
+  grid-area: 1 / 1 / 3 / 2;
+  place-content: center;
+}
+.task-completed_label{
+  font-size: var(--font-xs);
+}
+.task-completed_title{
+  grid-area: 2 / 2 ;
+}
+.task_progress{
+  flex-shrink: 0;
+  letter-spacing: -0.1em;
+}
+.task_progress_done{
+  color: var(--accent);
+}
+.task_content{
+  width: 100%;
+  min-width: 0;
+  padding-inline: var(--space-sm);
+}
+.task_title {
+  align-self: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 0;
+}
+.task_actions {
+  display: flex;
   gap: var(--space-sm);
   align-items: center;
   padding-left: var(--space-sm);
   border-left: 1px solid var(--border-color);
 }
-.task-remover{
+.task_meta{
+  font-size: var(--font-xs);
+  color: var(--text-light);
+}
+.task_remove {
   position: absolute;
   top: 0%;
-  right:0%;
-  transform: translate(50%,-50%);
+  right: 0%;
+  transform: translate(50%, -50%);
   background-color: var(--contrast-bg);
-  
 }
-.task-remover:hover{
+.task_remove:hover {
   background-color: var(--level-extreme);
 }
 
-
-.active-task .no-task{  
-  color: var(--text-light);
-}
 @media screen and (min-width: 1024px) {
   .todoContainer {
     top: 10dvh;

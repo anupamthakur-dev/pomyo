@@ -5,17 +5,17 @@ export const defaultSettings: Settings = {
   longBreakTime: 900,
   soundEnabled: true,
   accentColor: "#FF6347",
-  ticking: {
+  music: {
     sound: "kitchen",
     volume: 5,
   },
-  complete: { sound: "cute", volume: 5 },
-  enableComplete: true,
-  enableTicking: true,
+  alarm: { sound: "cute", volume: 5 },
+  enableAlarm: true,
+  enableMusic: true,
 };
 
- export const INITIAL_Y:number = 0.657;
- export const SEPERATE_Y:number = 0.825;
+export const INITIAL_Y: number = 0.657;
+export const SEPERATE_Y: number = 0.825;
 export const todos = [
   {
     id: "1234",

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import type { ITodo } from "../../type";
 import { Icon } from "../icon";
 import ActionModal from "./actionModal";
+import { useTodoStore } from "../../store/todo.store";
 
 export default function Todo({todo,isActive}:{todo:ITodo,isActive:boolean}){
     const [isActionModal,setIsActionModal] = useState(false);
+    const {markCompleted,isTaskCompleted} = useTodoStore()
 
     const closeModal = ()=>{
         const parent = document.getElementById('todoContainer_body');
@@ -23,7 +25,16 @@ export default function Todo({todo,isActive}:{todo:ITodo,isActive:boolean}){
     }
     return (
         <div className={`todo ${isActive?"is-active":""}`}>
-          
+          <div className="task_action">
+        <button
+          className={`btn btn-small ${isTaskCompleted(todo.id)?'is-active':''}`}
+          title="Mark task as completed"
+          onClick={()=>markCompleted(todo.id)}
+        >
+          {isTaskCompleted(todo.id)?<Icon name="CircleCheckBig" />:<Icon name="CircleCheck" />}
+         
+        </button>
+      </div>
          <div className={`todo_title ${todo.status === "completed"?"strike":""}`}>{todo.title}</div>
          <div className="todo_status" data-status={todo.status}>{todo.status}</div>
          <div className="todo_actions" onClick={openModal}><Icon name="EllipsisVertical" /></div>

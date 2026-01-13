@@ -1,0 +1,72 @@
+.notify-host {
+  position: fixed;
+  top: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.notify {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+  min-width: 280px;
+  max-width: 420px;
+
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--space-md);
+
+  background: var(--surface);
+  color: var(--text-primary);
+
+  box-shadow: 0 12px 32px hsl(0 0% 0% / 0.25);
+
+  animation: notifyIn 260ms cubic-bezier(.2,.8,.2,1),
+             notifyOut 240ms ease-in forwards;
+  animation-delay: 0ms, var(--notify-life, 2400ms);
+
+  will-change: transform, opacity;
+}
+
+.notify--success {
+  border-left: 4px solid var(--success);
+}
+.notify--success .notify-title{
+    color: var(--success);
+}
+
+
+.notify--info {
+  border-left: 4px solid var(--info);
+}
+.notify--info .notify-title{
+    color: var(--info);
+}
+
+.notify--warning {
+  border-left: 4px solid var(--warning);
+}
+.notify--warning .notify-title{
+    color: var(--warning);
+}
+
+@keyframes notifyIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes notifyOut {
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+}

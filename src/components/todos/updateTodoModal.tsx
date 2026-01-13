@@ -12,17 +12,28 @@ import type { ITodo } from "../../type";
 import Stepper from "./Stepper";
 import TaskFocusDurationSelector from "./TaskFocusDurationSelector";
 import { useSettingsStore } from "../../store/settings.store";
+import { useNotifyStore } from "../../store/notify.store";
 
 export default function UpdateTodoModal({ todo,close }: { todo: ITodo,close:()=>void}) {
   const updateTodo = useTodoStore((state) => state.updateTodo);
   const getSetting  = useSettingsStore.getState().getSetting;
+  const notify = useNotifyStore(s=>s.notify)
   const [sessions, setSessions] = useState<number>(todo.estimatedPomo);
   const [title, setTitle] = useState<string>(todo.title);
   const [taskFocusDuration, setIsTaskFocusDuration] = useState('previous');
 
   const handleUpdateTodo = useCallback(() => {
-    if (title.trim().length === 0 || sessions === 0) return;
-
+    
+    
+     if(title.trim().length === 0 ){
+     notify({
+      id:generateUUID(),
+      title:'Invalid Input',
+      message:'Title must not be empty.',
+      type:'info'
+     })
+     return;
+    }
     const newTodo: ITodo = {
       id: generateUUID(),
       title,
@@ -33,6 +44,12 @@ export default function UpdateTodoModal({ todo,close }: { todo: ITodo,close:()=>
     };
 
     updateTodo(todo.id, newTodo);
+    notify({
+      id:generateUUID(),
+      title:'Task updated',
+      message:title,
+      type:'success'
+     })
   }, [sessions, title, taskFocusDuration]);
 
   const totalFocusDuration = useCallback((): number => {

@@ -4,7 +4,7 @@ import gearSound from "../assets/gear3.mp3";
 import sfxs from '../uitls/sfx.json';
 import { pomyoSound } from '../core/controllers.ts';
 
-import { playComplete, playTicking, stopTicking } from '../uitls/audio';
+import { playAlarm, playMusic, stopMusic } from '../uitls/audio';
 
 import { usePomyoStore } from '../core/timer.ts';
 import type {TimerEventMap } from '../timer/timer.types.ts';
@@ -23,8 +23,8 @@ export default function PomodoroAudioEffects() {
 
   async function initSounds() {
     const sounds = {
-      ...sfxs.ticking,
-      ...sfxs.complete,
+      ...sfxs.music,
+      ...sfxs.alarm,
       gear: gearSound,
     };
 
@@ -54,16 +54,16 @@ export default function PomodoroAudioEffects() {
         const unsub = subscribe("status", (payload:TimerEventMap['status']) => {
             const { status } = payload
             if (status === "ticking") {
-                playTicking();
+                playMusic();
                 return;
             }
 
             // Anything else:
-            stopTicking();
+            stopMusic();
         });
         const unsub_complete = subscribe("complete", () => {
 
-            playComplete();
+            playAlarm();
         });
 
         return () => {

@@ -1,6 +1,6 @@
 import * as LucideIcons from "lucide-react";
 
-export type MODE = | "focus" | "short-break" | "long-break";
+export type MODE = "focus" | "short-break" | "long-break";
 export type UUIDTypes = string;
 export type TimerStatus = "idle" | "ticking" | "paused" | "completed";
 export type Listener = (...args: any[]) => void;
@@ -9,25 +9,17 @@ export type THEME = "light" | "dark";
 export type PomoEvents = "tick" | "complete" | "status" | "init";
 export type InitialTimer = { mode: MODE; duration: number };
 export type IconName = keyof typeof LucideIcons;
-export type SessionIntent =
-  | { type: "free" }
-  | { type: "task"; taskId: string };
+export type SessionIntent = { type: "free" } | { type: "task"; taskId: string };
 
-export type BootKey =
-  | "engine"
-  | "model"
-  | "settings"
-  | "worker"
-  | "sounds";
+export type BootKey = "engine" | "model" | "settings" | "worker" | "sounds";
 
 export type ModalState =
   | { type: "closed" }
-  | { type: "set-timer"; mode: MODE, onClose:()=>void }
+  | { type: "set-timer"; mode: MODE; onClose: () => void }
   | { type: "settings" }
-  | { type: "confirm"; message: string,onConfirm:()=>void }
-  | { type: "todo-add-form",center?:boolean}
-  | { type: "todo-update-form",todo:ITodo,center?:boolean};
-
+  | { type: "confirm"; message: string; onConfirm: () => void }
+  | { type: "todo-add-form"; center?: boolean }
+  | { type: "todo-update-form"; todo: ITodo; center?: boolean };
 
 export type SoundSetting = {
   sound: string;
@@ -35,10 +27,10 @@ export type SoundSetting = {
 };
 
 export type timerConfig = {
-  focus: number,     
-  shortBreak: number, 
-  longBreak: number, 
- };
+  focus: number;
+  shortBreak: number;
+  longBreak: number;
+};
 
 export type Settings = {
   focusTime: number;
@@ -46,10 +38,10 @@ export type Settings = {
   longBreakTime: number;
   soundEnabled: boolean;
   accentColor: string;
-  ticking: SoundSetting;
-  complete: SoundSetting;
-  enableTicking: boolean;
-  enableComplete: boolean;
+  music: SoundSetting;
+  alarm: SoundSetting;
+  enableMusic: boolean;
+  enableAlarm: boolean;
 };
 
 export interface ITimerInit {
@@ -59,16 +51,16 @@ export interface ITimerInit {
 
 export interface IPomodoroActionContext {
   startNewFreeFlow: () => void;
-  initTaskSession:(taskId: string,duration?:number) => void;
-  initFreeSession():void;
-startCurrentSession:()=>void;
+  initTaskSession: (taskId: string, duration?: number) => void;
+  initFreeSession(): void;
+  startCurrentSession: () => void;
 
   reset(): void;
   pause(): void;
   resume(): void;
   subscribe: (eventName: PomoEvents, callbacks: Listener) => Unsubscribe;
-  init(intial:ITimerInit):void;
-  status:TimerStatus;
+  init(intial: ITimerInit): void;
+  status: TimerStatus;
   isReady: boolean;
 }
 
@@ -77,9 +69,8 @@ export interface IPomodoroContext {
   sessionCount: number;
   flowMode: boolean;
   toggleFlowMode: () => void;
-  decideNextSession:(mode:MODE)=>MODE
+  decideNextSession: (mode: MODE) => MODE;
 }
-
 
 export interface ITimerForm {
   children: React.ReactNode;
@@ -95,5 +86,27 @@ export interface ITodo {
   focusDuration: number;
   estimatedPomo: number;
   completedPomo: number;
-  status: "pending" |  "completed";
+  status: "pending" | "completed";
+}
+
+export type NotifyType =
+  | "success"
+  | "info"
+  | "warning";
+
+export interface Notify {
+  id: string;
+  type: NotifyType;
+  title?: string;
+  message: string;
+  autoCloseMs?: number;
+}
+
+export interface NotifyStore {
+  current: Notify | null;
+  dismissTimer?: ReturnType<typeof setTimeout>;
+
+  notify(notification: Notify): void;
+  dismiss(): void;
+  clear(): void;
 }

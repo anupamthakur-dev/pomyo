@@ -121,6 +121,32 @@
      transform: translateY(0px);
    }
 }
+
+@keyframes pulseOut {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 hsl(from var(--level-low) h s l / 0.45);
+   
+  }
+
+  40% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 14px hsl(from var(--level-low) h s l / 0.25);
+  }
+
+  70% {
+    transform: scale(1.01);
+    box-shadow: 0 0 0 26px hsl(from var(--level-low) h s l / 0.08);
+  }
+
+  100% {
+    transform: scale(0.98);
+    box-shadow: 0 0 0 40px transparent;
+    
+  }
+}
+
+
 .animate-text{
    display: inline-block;
   animation: animateText  180ms ease-out;

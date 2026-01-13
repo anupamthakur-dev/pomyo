@@ -105,9 +105,9 @@ export function decideNextSession(
   focusSessionCompleted: number
 ): MODE {
   if (completedSession === "focus") {
-   ;
+       const nextCount = focusSessionCompleted + 1;
 
-    if (focusSessionCompleted % 4 === 0) {
+    if (nextCount % 4 === 0) {
       return "long-break";
     }
 

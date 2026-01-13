@@ -70,6 +70,9 @@
   --level-medium: #2196f3; /* calm blue */
   --level-high: orange; /* amber */
   --level-extreme: var(--accent); /* soft red */
+  --success :#4caf50;
+  --info: #2196f3;
+  --warning: orange; 
 
 
 

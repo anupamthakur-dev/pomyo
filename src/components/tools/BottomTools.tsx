@@ -23,7 +23,7 @@ export default function BottomTools({
       className={`bottom-tool-container `}
       style={timerModal ? { zIndex: "var(--z-popover)" } : { zIndex: 10 }}
     >
-      <ActiveTask/>
+      <ActiveTask isTimerModal={timerModal}/>
       {timerModal && (
         <div
           className={`setTime_tools ${

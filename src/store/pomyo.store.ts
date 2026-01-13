@@ -16,6 +16,8 @@ interface PomyoState {
   taskFocusOverride?: number;
   flowMode: boolean;
   status: TimerStatus;
+  blockNextAutoStart:boolean;
+  blockAutoStartOnce(reason:string):void;
   applyBaseTimerConfig: (base: timerConfig) => void;
   toggleFlowMode: () => void;
   start: () => void;
@@ -41,6 +43,11 @@ export function createPomyoStore(engine: TimerEngine) {
       set({ mode: nextSession });
 
       if (!get().flowMode) return;
+
+      if(get().blockNextAutoStart){
+        set({blockNextAutoStart:false});
+        return;
+      }
 
       setTimeout(() => {
         engine.post("START");
@@ -69,17 +76,12 @@ export function createPomyoStore(engine: TimerEngine) {
 
     function onComplete(payload: TimerEventMap["complete"]) {
       const completedMode = payload.mode;
-      let nextFocusCount=get().focusSessionCompleted;
+      let nextFocusCount = get().focusSessionCompleted;
 
       if (completedMode === "focus") {
-         nextFocusCount += 1;
+        nextFocusCount += 1;
       }
-      const nextMode = decideNextSession(
-        completedMode,
-        nextFocusCount
-      );
-
-      
+      const nextMode = decideNextSession(completedMode, get().focusSessionCompleted);
 
       set({ focusSessionCompleted: nextFocusCount });
       intialiseTimer(nextMode);
@@ -162,6 +164,11 @@ export function createPomyoStore(engine: TimerEngine) {
       taskFocusOverride: undefined,
       flowMode: false,
       status: "idle",
+      blockNextAutoStart:false,
+      blockAutoStartOnce:(reason:string)=>{
+        set({blockNextAutoStart:true})
+        console.log(reason)
+      },
       applyBaseTimerConfig(base) {
         set((state) => {
           const nextTimerConfig = resolveTimerConfig(

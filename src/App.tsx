@@ -7,6 +7,7 @@ import ActionToolWrapper from "./components/ActionToolWrapper";
 import TodoPanel from "./components/panel/todoPanel";
 
 import { useEffect } from "react";
+import NotifyHost from "./components/NotifyHost";
 
 
 
@@ -34,7 +35,7 @@ function App() {
         <ActionToolWrapper />
 
         <TodoPanel />
-        
+       
       </main>
     </>
   );
