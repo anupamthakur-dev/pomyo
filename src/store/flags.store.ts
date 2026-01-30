@@ -7,7 +7,7 @@ interface flags {
     flagTimerModal(flag:boolean):void
 }
 
-export const useFlags = create<flags>((set,get)=>({
+export const useFlags = create<flags>((set)=>({
     isTimerModal:false,
     reInitTimer:false,
     flagTimerModal(flag) {

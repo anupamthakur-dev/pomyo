@@ -1,6 +1,6 @@
 // src/components/Model.tsx
 import { memo, useEffect, useRef } from "react";
-import { a, useSpring, SpringRef } from "@react-spring/three";
+import { a, useSpring } from "@react-spring/three";
 import * as THREE from "three";
 
 

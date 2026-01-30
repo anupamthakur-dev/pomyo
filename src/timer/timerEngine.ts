@@ -1,7 +1,7 @@
 import TimerWorker from "../timer/timer.worker.ts?worker";
-import type { Listener, Unsubscribe } from "../type";
+
 import { EventEmitter } from "./eventEmitter";
-import type { TimerBus, TimerCommandMessage, TimerEventMessage} from './timer.types'
+import type { TimerBus,  TimerEventMessage} from './timer.types'
 
 
 

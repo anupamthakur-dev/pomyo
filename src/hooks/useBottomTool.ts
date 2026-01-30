@@ -6,7 +6,6 @@ import useTimerActions from "./useTimerActions";
 import { useCallback } from "react";
 import { useNotifyStore } from "../store/notify.store";
 import { generateUUID } from "../uitls/helper";
-import { useFlags } from "../store/flags.store";
 import { useTomatoStore } from "../store/tomato.store";
 
 export default function useBottomTool() {

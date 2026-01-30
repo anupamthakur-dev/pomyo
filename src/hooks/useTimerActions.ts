@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { usePomyoStore } from "../core/timer";
 
 export default function useTimerActions() {

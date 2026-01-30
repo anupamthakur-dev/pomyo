@@ -1,5 +1,5 @@
 // timer.worker.ts (patched resume behavior)
-import type { ITimerInit, TimerStatus } from "../type";
+import type { ITimerInit } from "../type";
 import type { TimerCommandMessage } from "./timer.types";
 import { TimerController } from "../controller/timerController";
 
