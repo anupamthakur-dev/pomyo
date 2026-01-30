@@ -32,7 +32,7 @@ postMessage({ type: "ready" });
 
 self.onmessage = (message: MessageEvent<TimerCommandMessage>) => {
   const command = message.data;
-  console.log(command);
+ 
   switch (command.type) {
     case "INIT":
       pomodoro.init(command.payload as ITimerInit);

@@ -1,7 +1,6 @@
 
 import FlexContainer from "../flexContainer";
-import { Icon } from "../icon";
-import SectionBreaker from "../SectionBreaker";
+
 import VolumeBar from "../volumeBar";
 
 export default function SoundSelect({

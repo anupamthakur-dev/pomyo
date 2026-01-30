@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import GhostBtn from "../buttons/ghostBtn";
 
 import ThemeIconBtn from "../buttons/themeIconBtn";

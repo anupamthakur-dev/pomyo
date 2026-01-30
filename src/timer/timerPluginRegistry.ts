@@ -10,7 +10,7 @@ export class TimerPluginRegistry {
 
   register(plugin: TimerPlugin) {
     if (this.plugins.has(plugin.id)) {
-      console.warn(`[TimerPluginRegistry] Plugin already registered: ${plugin.id}`);
+      // console.warn(`[TimerPluginRegistry] Plugin already registered: ${plugin.id}`);
       return;
     }
 

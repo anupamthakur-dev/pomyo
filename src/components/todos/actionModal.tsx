@@ -32,16 +32,14 @@ export default function ActionModal({
     const parentTop = parent?.top;
     const top = modal.top;
 
-    if (top < parentTop) {
-      console.log("modal top", top);
-      console.log("parent top", parentTop);
+    if (parentTop !== undefined && top < parentTop) {
+     
 
       ref.current.style.top = `${parentTop - top}px`;
     }
 
-    if (bottom > parentBottom) {
-      console.log("modal bottom", bottom);
-      console.log("parent bottom", parentBottom);
+    if (parentBottom !== undefined && bottom > parentBottom) {
+     
       ref.current.style.top = `${parentBottom - bottom}px`;
     }
 

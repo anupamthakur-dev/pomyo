@@ -34,7 +34,7 @@ export class TimerEngine implements TimerBus {
   }
 
   post:TimerBus['post']=(type,payload)=> {
-    console.log("commmand :", {type,payload})
+ 
     this.worker.postMessage({type,payload});
   }
   isReady(){
