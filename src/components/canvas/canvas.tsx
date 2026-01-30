@@ -1,53 +1,72 @@
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import {
-  Environment,
   PerspectiveCamera,
 } from "@react-three/drei";
 import { memo, useEffect, useRef } from "react";
 import { pomyoCamera } from "../../core/controllers";
 import { useSpring, animated } from "@react-spring/three";
 
-const CanvasContainer: React.FC<{ children: THREE.Object3D }> = ({
+const CanvasContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  
+   
+  const isMobile = window.matchMedia("(pointer : coarse)").matches;
   return (
     <div className="canvasContainer">
-      <Canvas>
+      <Canvas >
         <CameraBinder />
-        {/* === 3-Point Lighting Setup === */}
-        {/* Key Light */}
-        <directionalLight
-          position={[5, 5, 5]}
-          intensity={1}
-          color="#ffffff"
-          castShadow
-        />
+   
+  {/* Key Light (top-front) */}
+  <directionalLight
+    position={[10, 10, 10]}
+    intensity={isMobile?1.2 : 0.7}
+    color="#ffffff"
+  />
 
-        {/* Fill Light */}
-        <directionalLight
-          position={[-5, 2, 3]}
-          intensity={0.5}
-          color="#ffd6a5"
-        />
+  {/* Fill Light (top-back) */}
+  <directionalLight
+    position={[-10, 5, 5]}
+    intensity={isMobile?1.2 : 0.7}
+    color="#ffeedd"
+  />
 
-        {/* Rim / Back Light */}
-        <directionalLight
-          position={[0, 3, -5]}
-          intensity={0.8}
-          color="#9ecfff"
-        />
+  {/* Rim Light (back-top) */}
+  <directionalLight
+    position={[0, 15, -10]}
+    intensity={isMobile?1.5 : 1}
+    color="#80aaff"
+  />
 
-        {/* Soft ambient */}
-        <ambientLight intensity={0.3} color="#ffffff" />
+  {/* Bottom Light (warm underglow) */}
+  <pointLight
+    position={[0, -5, 0]}
+    intensity={isMobile?1.5 : 0.7}
+    color="#ffccaa"
+  />
 
+  {/* Front Light (bright and friendly) */}
+  
+<pointLight
+    position={[0, 0, 5]}
+    intensity={isMobile?7 : 6}
+    color="#ffffff"
+  />
+  {/* Hemisphere Light (ambient sky & ground) */}
+  <hemisphereLight
+    color="#cceeff"
+    groundColor="#c0c0c0"
+    intensity={isMobile?1.5 : 1}
+  />
+
+  {/* Ambient Light */}
+  <ambientLight intensity={isMobile?1.2 : 0.7} />
         {/* === Model === */}
 
         {children}
 
         {/* Environment & Controls */}
-       <Environment preset="sunset" background={false} /> 
+       {/* <Environment preset="sunset" background={false} />  */}
       </Canvas>
     </div>
   );
@@ -75,7 +94,7 @@ function CameraBinder() {
 
   return (
     <AnimatedCamera
-      position={spring.position}
+      position={spring.position as any}
       makeDefault
       ref={cameraRef}
       fov={60}

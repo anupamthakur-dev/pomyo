@@ -13,6 +13,8 @@ import { useModal } from "../../context/modalProvider";
 import NoTodos from "./NoTodos";
 import { useTodoStore } from "../../store/todo.store";
 
+
+
 export default function TodoContainer({
   closeTodoPanel,
   isTodoPanel,
@@ -22,6 +24,7 @@ export default function TodoContainer({
 }) {
   const  {todos,activeTodoId} = useTodoStore();
   const {open} = useModal()
+
 
   const transition = useTransition(isTodoPanel, {
     from: { opacity: 0, transform: "translateX(10%) " },
@@ -52,9 +55,11 @@ export default function TodoContainer({
             </GhostBtn>
           </div>
           <div className="todoContainer_body customScrollBar" id="todoContainer_body">
+      
             {todos.length === 0 && <NoTodos/>}
             {todos.length > 0 &&
               todos.map((t) => <Todo key={t.id} todo={t} isActive={t.id === activeTodoId} />)}
+             
           </div>
           <div className="todoContainer_foot">
            <IconBtn action={openAddTodoModal} icon="Plus" text="New To Do" type="hero"/>

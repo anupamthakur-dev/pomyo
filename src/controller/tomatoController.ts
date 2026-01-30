@@ -2,27 +2,22 @@
 import { SpringRef } from "@react-spring/core";
 import { secondsToRadians } from "../uitls/helper";
 import { INITIAL_Y, SEPERATE_Y } from "../uitls/defaultVal";
+import type { ModelSpring } from "../type";
 
 export class TomatoAnimationController {
   private _INITIAL_Y = INITIAL_Y;
   private _SEPERATE_Y = SEPERATE_Y;
   public isIntroDone = false;
 
-  private animationApi: SpringRef<{
-    positionY: number;
-    rotationZ: number;
-  }> | null = null;
+  private animationApi: SpringRef<ModelSpring> | null = null;
 
 
   setAnimationApi(
-    api: SpringRef<{
-      positionY: number;
-      rotationZ: number;
-    }> |null
+    api: SpringRef<ModelSpring> |null
   ) {
     this.animationApi = api;
   }
-
+// target = seconds i.e is later on covert to radian
   private _introAnimation(target: number) {
     if (!this.animationApi) return;
 
@@ -39,7 +34,7 @@ export class TomatoAnimationController {
   }
 
   private _Radian = secondsToRadians;
-
+  // targetRotation = seconds i.e is later on covert to radian
   introSeperateAndRotate(targetRotation: number) {
     if (!this.animationApi) return;
 
@@ -51,7 +46,7 @@ export class TomatoAnimationController {
     // used for init event. Rotate to setted duration of pomo
     this.tickRotate(targetRotation);
   }
-
+// target = seconds i.e is later on covert to radian
   tickRotate(rotation: number) {
     if (!this.animationApi) return;
 

@@ -1,17 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 
-import {
-  convertToMinutes,
-    formatTimerValue,
+import { convertToMinutes, formatTimerValue } from "../uitls/helper";
 
-} from "../uitls/helper";
-
-import '../styles/bigDigit.css'
+import "../styles/bigDigit.css";
 
 import { useSettingsStore } from "../store/settings.store";
 import { usePomyoStore } from "../core/timer";
-import type { EventPayload } from "../timer/timer.types";
-
+import type { TimerEventMap } from "../timer/timer.types";
 
 function BigDigit() {
   const [timer, setTimer] = useState<{
@@ -25,26 +20,23 @@ function BigDigit() {
     () => {
       const modeTime = useSettingsStore.getState().settings.focusTime;
       return convertToMinutes(modeTime);
-    }
+    },
   );
-  const  subscribe  = usePomyoStore(s=> s.subscribeToEvent);
-  
+  const subscribe = usePomyoStore((s) => s.subscribeToEvent);
 
   // Keep track of last time to avoid redundant updates
   const lastTimeRef = useRef<{ min: number; sec: number } | null>(null);
 
   useEffect(() => {
-    
-
     // --- tick subscription ---
     const unsub_tick = subscribe("tick", (payload) => {
-      const {remaining} = payload
+      const { remaining } = payload;
       const { min, sec } = convertToMinutes(remaining);
 
       const last = lastTimeRef.current;
       if (!last || last.min !== min || last.sec !== sec) {
         lastTimeRef.current = { min, sec };
-       
+
         setTimer({ min, sec });
       }
 
@@ -54,27 +46,23 @@ function BigDigit() {
     });
 
     // --- init subscription ---
-    const unsub_init = subscribe("init", (payload:EventPayload<'init'>['payload']) => {
-      const {duration} = payload
+    const unsub_init = subscribe("init", (payload: TimerEventMap["init"]) => {
+      const { duration } = payload;
       const { min, sec } = convertToMinutes(duration);
-      setTimer({min:null,sec:null})
+      setTimer({ min: null, sec: null });
       setDefaultTime({ min, sec });
     });
 
     return () => {
-      
       unsub_init();
       unsub_tick();
-    
-      
+
       lastTimeRef.current = null;
     };
   }, [subscribe]);
 
-  
-
   return (
-    <div id="bigDigit" className="bigDigit teko-700" >
+    <div id="bigDigit" className="bigDigit teko-700">
       <span>{formatTimerValue(timer.min, defaultTime.min)}</span>
       <span>{formatTimerValue(timer.sec, defaultTime.sec)}</span>
     </div>

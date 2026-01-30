@@ -11,7 +11,7 @@ export default function ModalRenderer({modal,onClose}:{modal:ModalState,onClose:
     const isCenter = "center" in modal?modal.center: false;
    
     return (
-        <div id="modalWrapper" style={{alignItems:`${isCenter?'center':'end'}`}} onClickCapture={(e) => {
+        <div id="modalWrapper" className={`${modal.type === 'set-timer'?"":"backdrop-blur"}`} style={{alignItems:`${isCenter?'center':'end'}`}} onClickCapture={(e) => {
           if (e.target !== e.currentTarget) return;
           onClose();
         }}>

@@ -3,9 +3,6 @@ import type { ITodo } from "../../type";
 import { useTodoStore } from "../../store/todo.store";
 import { useModal } from "../../context/modalProvider";
 import type { UUIDTypes } from "../../type";
-import { useNotifyStore } from "../../store/notify.store";
-import { generateUUID } from "../../uitls/helper";
-
 
 export default function ActionModal({
   id,
@@ -15,7 +12,6 @@ export default function ActionModal({
   closeModal: () => void;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
-
 
   useEffect(() => {
     if (!ref.current) return;
@@ -63,8 +59,8 @@ export default function ActionModal({
 }
 
 function ContextMenu({ id }: { id: UUIDTypes }) {
-  const { deleteTodo, markCompleted, activateTodo } = useTodoStore();
-  const { notify } = useNotifyStore()
+  const { deleteTodo, markCompleted, activateTodo, activeTodoId,deactivateActiveTodo } =
+    useTodoStore();
 
   const { open } = useModal();
 
@@ -72,9 +68,15 @@ function ContextMenu({ id }: { id: UUIDTypes }) {
 
   if (!todo) return;
 
+  if (activeTodoId === id)
+    return (
+      <>
+        <div className="contextBtn disabled">Task is Active</div>
+        <div className="contextBtn" onClick={deactivateActiveTodo}>Deactivate</div>
+      </>
+    );
+
   const isCompleted = todo.completedPomo >= todo.estimatedPomo;
-
-
 
   return (
     <>
@@ -87,9 +89,7 @@ function ContextMenu({ id }: { id: UUIDTypes }) {
       {isCompleted ? (
         <div className="contextBtn disabled">Completed ✔</div>
       ) : (
-        <div className="contextBtn" onClick={() => activateTodo(id)
-
-        }>
+        <div className="contextBtn" onClick={() => activateTodo(id)}>
           Start task
         </div>
       )}

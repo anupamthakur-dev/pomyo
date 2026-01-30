@@ -30,7 +30,7 @@ export default function UpdateTodoModal({ todo,close }: { todo: ITodo,close:()=>
       id:generateUUID(),
       title:'Invalid Input',
       message:'Title must not be empty.',
-      type:'info'
+      type:'error'
      })
      return;
     }

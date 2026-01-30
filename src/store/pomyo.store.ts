@@ -1,9 +1,12 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import type { MODE, timerConfig, TimerStatus } from "../type";
 import { type TimerBus, type TimerEventMap } from "../timer/timer.types";
 import type { TimerEngine } from "../timer/timerEngine";
+import { useNotifyStore } from "./notify.store";
 import {
   decideNextSession,
+  generateUUID,
   getModeDuration,
   getSavedTimerConfig,
 } from "../uitls/helper";
@@ -30,9 +33,10 @@ interface PomyoState {
 }
 
 export function createPomyoStore(engine: TimerEngine) {
-  return create<PomyoState>((set, get) => {
+  return create<PomyoState, [['zustand/devtools', never]]>(devtools((set, get) => {
     // flag for is timer initailise atleast one time
     let isFirstInitialise = false;
+    const FLOW_GAP=5000;
 
     function resolveTimerConfig(base: timerConfig, override?: number) {
       if (!override) return base;
@@ -48,10 +52,15 @@ export function createPomyoStore(engine: TimerEngine) {
         set({blockNextAutoStart:false});
         return;
       }
-
+      useNotifyStore.getState().notifyCountdown({
+        id:generateUUID(),
+        title:"Next Session",
+        message:`${nextSession} start in`,
+        countdown:FLOW_GAP
+      })
       setTimeout(() => {
         engine.post("START");
-      }, 1500);
+      }, FLOW_GAP);
     }
 
     function intialiseTimer(mode: MODE) {
@@ -197,5 +206,5 @@ export function createPomyoStore(engine: TimerEngine) {
         return engine.subscribe(eventName, cb);
       },
     };
-  });
+  }));
 }

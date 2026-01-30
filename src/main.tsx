@@ -11,7 +11,7 @@ import ModalProvider from "./context/modalProvider.tsx";
 import ThemeProvider from "./context/themeProvider.tsx";
 
 import { SettingsHydrationGate } from "./components/SettingHydrationGate.tsx";
-import PomodoroTomatoBridge from "./components/PomodoroTomatoBridge.tsx";
+
 import PomodoroAudioEffects from "./components/PomodoroAudioEffect.tsx";
 import NotifyHost from "./components/NotifyHost.tsx";
 
@@ -21,10 +21,10 @@ createRoot(document.getElementById("root")!).render(
       <TomatoProvider>
         <ModalProvider>
           <SettingsHydrationGate />
-          <PomodoroTomatoBridge />
+        
           <PomodoroAudioEffects />
           <App />
-           <NotifyHost/>
+          <NotifyHost/>
         </ModalProvider>
       </TomatoProvider>
     </ThemeProvider>

@@ -14,7 +14,7 @@ export type TimerEventMap ={
   tick:{remaining:number};
   init: { duration: number };
   complete: {  mode: MODE  };
-  status: { status: TimerStatus };
+  status: { status: TimerStatus,mode:MODE };
 }
 
 export type MessageFrom<T extends Record<string, object | undefined>>={
@@ -54,4 +54,10 @@ export interface TimerPlugin {
   id: string;
   attach(bus: TimerBus): void;
   detach(): void;
+}
+
+export interface TitleContext {
+  remaining: number; // seconds
+  status: "running" | "paused" | "stopped";
+  session: "focus" | "break";
 }

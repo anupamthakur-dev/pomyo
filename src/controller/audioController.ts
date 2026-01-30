@@ -1,5 +1,5 @@
 import { AudioDB } from "../db/audioDb";
-
+export const MAX_VOLUMN = 4;
 // AudioManager.ts
 export class AudioManager {
   private static sharedCtx = new AudioContext();
@@ -133,6 +133,18 @@ export class AudioManager {
       this.audioContext.currentTime + fadeMs / 1000
     );
   }
+
+  setLoopVolume(name: string, volume: number) {
+  const loop = this.loopSources.get(name);
+  if (!loop) return;
+
+  loop.gain.gain.setTargetAtTime(
+    volume,
+    this.audioContext.currentTime,
+    0.05 // smooth fade, no clicks
+  );
+}
+
 
   /** ⏹ Stop loop (with fade out) */
   stopLoop(name: string, fadeMs = 200) {

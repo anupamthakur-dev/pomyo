@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-
 import GhostBtn from "../buttons/ghostBtn";
 
 import ThemeIconBtn from "../buttons/themeIconBtn";
@@ -11,28 +10,12 @@ import IconBtn from "../buttons/IconButton";
 
 import ModeTimeline from "../ModeTimeline";
 import { usePomyoStore } from "../../core/timer";
-import type { EventPayload } from "../../timer/timer.types";
 
 export default function TopTools({ timerModal }: { timerModal: boolean }) {
-  const { toggleFlowMode, flowMode, subscribeToEvent : subscribe } = usePomyoStore();
- 
+  const { toggleFlowMode, flowMode } = usePomyoStore();
+
   const { theme, toggleTheme } = useTheme();
-  const toggleTodoPanel = useTodoPanel((state)=> state.toggle);
- 
-
-  const [isTicking, setIsTicking] = useState<boolean>(false);
-
-  useEffect(() => {
-    const unsub = subscribe("status", (payload:EventPayload<'status'>['payload']) => {
-      const {status} = payload
-      if (status === "ticking") {
-        setIsTicking(true);
-      } else {
-        setIsTicking(false);
-      }
-    });
-    return () => unsub();
-  }, [subscribe]);
+  const toggleTodoPanel = useTodoPanel((state) => state.toggle);
 
   return (
     <div
@@ -40,40 +23,10 @@ export default function TopTools({ timerModal }: { timerModal: boolean }) {
         timerModal ? "exit-up hidden" : "enter-down"
       }`}
     >
-  
-        {/* <ThemeIconBtn
-          text="Focus Time"
-          action={() => {
-            // handleMode("focus");
-          }}
-          color="var(--level-extreme)"
-          isActive={mode === "focus"}
-          disable={isTicking}
-          icon="Target"
-        />
-
-        <ThemeIconBtn
-          text="Short break"
-          action={() => {
-            // handleMode("short-break");
-          }}
-          color="var(--level-low)"
-          isActive={mode === "short-break"}
-          disable={isTicking}
-          icon="Coffee"
-        />
-
-        <ThemeIconBtn
-          text="Long break"
-          action={() => {
-            // handleMode("long-break");
-          }}
-          color="var(--level-medium)"
-          isActive={mode === "long-break"} 
-          disable={isTicking}
-          icon="Bed"
-        /> */}
-        <ModeTimeline/>
+      <ModeTimeline />
+      <div className="logo">
+        <img src="./pomyoLogo.svg" alt="Pomyo Logo" />
+      </div>
 
       <div style={{ width: "fit-content" }} className="topToggleContainer">
         <ThemeIconBtn

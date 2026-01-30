@@ -1,28 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSettingsStore } from "../store/settings.store";
 
 import { useBootStore } from "../store/boot.store";
 
 export function SettingsHydrationGate() {
-  const markReady  = useBootStore(s=>s.markReady);
-const [hydrated, setHydrated] = useState(
-  useSettingsStore.persist.hasHydrated()
-);
+  const markReady = useBootStore(s => s.markReady);
 
-useEffect(() => {
-  if (useSettingsStore.persist.hasHydrated()) {
-    setHydrated(true);
-    markReady('settings')
-    return;
-  }
 
-  const unsub = useSettingsStore.persist.onFinishHydration(() => {
-    setHydrated(true);
-    markReady("settings")
-  });
+  useEffect(() => {
+    if (useSettingsStore.persist.hasHydrated()) {
 
-  return () => unsub?.();
-}, []);
+      markReady('settings')
+      return;
+    }
+
+    const unsub = useSettingsStore.persist.onFinishHydration(() => {
+
+      markReady("settings")
+    });
+
+    return () => unsub?.();
+  }, []);
 
 
   return null;

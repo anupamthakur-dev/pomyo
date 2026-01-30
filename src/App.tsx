@@ -7,7 +7,10 @@ import ActionToolWrapper from "./components/ActionToolWrapper";
 import TodoPanel from "./components/panel/todoPanel";
 
 import { useEffect } from "react";
-import NotifyHost from "./components/NotifyHost";
+
+import SyncTimerTotitle from "./components/SyncTimerToTitle";
+import { PomyoLoader } from "./components/PomyoLoader";
+
 
 
 
@@ -21,9 +24,11 @@ function App() {
 }
   },[ready])
 
-  if (!isBooted) return <div>Loading...</div>;
+  
+  if (!isBooted) return <PomyoLoader/>;
   return (
     <>
+    <SyncTimerTotitle/>
       <main className="main-container">
         <BigDigit />
         <CanvasContainer>

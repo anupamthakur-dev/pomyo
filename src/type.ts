@@ -45,7 +45,7 @@ export type Settings = {
 };
 
 export interface ITimerInit {
-  mode: MODE | null;
+  mode: MODE;
   duration: number;
 }
 
@@ -92,7 +92,8 @@ export interface ITodo {
 export type NotifyType =
   | "success"
   | "info"
-  | "warning";
+  | "warning"
+  | "error";
 
 export interface Notify {
   id: string;
@@ -102,11 +103,24 @@ export interface Notify {
   autoCloseMs?: number;
 }
 
+export interface CountDownNotify  {
+  id: string;
+  title?: string;
+  message: string;
+  countdown: number;
+}
+
 export interface NotifyStore {
   current: Notify | null;
+  countdown:CountDownNotify | null;
   dismissTimer?: ReturnType<typeof setTimeout>;
 
   notify(notification: Notify): void;
+  notifyCountdown(notification:CountDownNotify):void;
   dismiss(): void;
   clear(): void;
 }
+export type ModelSpring = {
+  positionY: number;
+  rotationZ: number;
+};

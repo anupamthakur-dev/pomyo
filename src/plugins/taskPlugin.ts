@@ -2,6 +2,8 @@ import { usePomyoStore } from "../core/timer";
 import { useTodoStore } from "../store/todo.store";
 import type { TimerPlugin, TimerBus } from "../timer/timer.types";
 
+
+
 export class TaskPlugin implements TimerPlugin {
   id = "task-plugin";
   private unsub?: (() => void)[];
@@ -12,6 +14,7 @@ export class TaskPlugin implements TimerPlugin {
   }
 
   attach(bus: TimerBus) {
+    
     const unsubComplete = bus.subscribe("complete", (e) => {
       const todoStore = useTodoStore.getState();
       const pomyoStore = usePomyoStore.getState();

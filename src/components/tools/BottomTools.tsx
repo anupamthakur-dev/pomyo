@@ -8,6 +8,7 @@ import GhostBtn from "../buttons/ghostBtn";
 import ActiveTask from "../todos/ActiveTask";
 import { usePomyoStore } from "../../core/timer";
 
+
 export default function BottomTools({
   timerModal,
   bottomActions,
@@ -17,6 +18,7 @@ export default function BottomTools({
 }) {
   const { close } = useModal();
   const  mode  = usePomyoStore(s=>s.mode);
+  
 
   return (
     <div

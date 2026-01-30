@@ -29,7 +29,7 @@
   --accent-hover: #ff7a5e;
   --accent-20: hsl(from var(--accent) h s 75% / 20%);
   --bg: light-dark(var(--white), var(--black));
-  --bg-light: light-dark(#ffffff, #161616);
+  --bg-light: light-dark(#F1F1F1, #161616);
   --border-color: light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.08));
   --shadow: light-dark(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.6));
   --space-xs: 0.25rem;
@@ -73,6 +73,7 @@
   --success :#4caf50;
   --info: #2196f3;
   --warning: orange; 
+  --error: #D32F2F; 
 
 
 
@@ -82,7 +83,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
+*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -106,7 +107,7 @@ html[data-theme="dark"] {
 
 body {
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
   display: flex;
   justify-content: center;

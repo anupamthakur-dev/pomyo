@@ -1,6 +1,7 @@
 import { v4 as UUID } from "uuid";
 import type { MODE, timerConfig } from "../type";
 import { useSettingsStore } from "../store/settings.store";
+import { MAX_VOLUMN } from "../controller/audioController";
 
 const months = [
   "Jan",
@@ -127,3 +128,12 @@ export function getModeDuration(mode: MODE, time: timerConfig): number {
 
   return time.longBreak;
 }
+
+export function percentToVolumn(percent:number):number{
+   return MAX_VOLUMN * percent / 100
+}
+
+export function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
+

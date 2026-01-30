@@ -3,6 +3,7 @@ import type { NotifyStore } from "../type";
 
 export const useNotifyStore = create<NotifyStore>((set, get) => ({
   current: null,
+  countdown: null,
   dismissTimer: undefined,
 
   notify(notification) {
@@ -11,18 +12,26 @@ export const useNotifyStore = create<NotifyStore>((set, get) => ({
     if (dismissTimer) {
       clearTimeout(dismissTimer);
     }
+    
 
     let timer: ReturnType<typeof setTimeout> | undefined;
 
-    if (notification.autoCloseMs) {
-      timer = setTimeout(() => {
-        set({ current: null, dismissTimer: undefined });
-      }, notification.autoCloseMs);
-    }
+    timer = setTimeout(() => {
+      set({ current: null, dismissTimer: undefined });
+    }, notification.autoCloseMs || 2000);
 
     set({
       current: notification,
       dismissTimer: timer,
+    });
+  },
+
+  notifyCountdown(notification) {
+    setTimeout(() => {
+      set({ countdown: null });
+    }, notification.countdown + 1000);
+    set({
+      countdown: notification,
     });
   },
 

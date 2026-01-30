@@ -12,7 +12,7 @@ interface ITimercontroller {
 }
 
 export abstract class TimerController implements ITimercontroller {
-  protected _mode:MODE | null = null;
+  protected _mode:MODE  = 'focus';
   protected _remainings: number = 0;
   protected _target: number = 0;
   protected _fps: number = 200;
@@ -28,7 +28,7 @@ export abstract class TimerController implements ITimercontroller {
 
   protected abstract _onInit(duration: number): void;
 
-  protected abstract _onStatusUpdate(s: TimerStatus): void;
+  protected abstract _onStatusUpdate(): void;
 
   public get remainingsSec(): number {
     return Math.max(0, Math.ceil(this._remainings / 1000));
@@ -114,6 +114,6 @@ export abstract class TimerController implements ITimercontroller {
 
   private _updateStatus(s: TimerStatus): void {
     this._status = s;
-    this._onStatusUpdate(s);
+    this._onStatusUpdate();
   }
 }

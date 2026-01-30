@@ -7,9 +7,9 @@ export const defaultSettings: Settings = {
   accentColor: "#FF6347",
   music: {
     sound: "kitchen",
-    volume: 5,
+    volume: 25,
   },
-  alarm: { sound: "cute", volume: 5 },
+  alarm: { sound: "cute", volume: 25 },
   enableAlarm: true,
   enableMusic: true,
 };

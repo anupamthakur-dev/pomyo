@@ -28,7 +28,7 @@ export default function AddTodoModal({close}:{close:()=>void}) {
       id:generateUUID(),
       title:'Invalid Input',
       message:'Title must not be empty.',
-      type:'info'
+      type:"error"
      })
      return;
     }

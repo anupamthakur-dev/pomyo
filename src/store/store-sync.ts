@@ -1,6 +1,7 @@
 import { usePomyoStore } from "../core/timer";
 import { useSettingsStore } from "./settings.store";
 
+
 export function syncSettingsToPomyo() {
   let prev = useSettingsStore.getState().settings;
 
@@ -10,8 +11,9 @@ export function syncSettingsToPomyo() {
       prev.breakTime !== next.breakTime ||
       prev.longBreakTime !== next.longBreakTime
     ) {
+      
       if (!usePomyoStore) return;
-      usePomyoStore.getState().applyBaseTimerConfig({
+        usePomyoStore.getState().applyBaseTimerConfig({
         focus: next.focusTime,
         shortBreak: next.breakTime,
         longBreak: next.longBreakTime,
