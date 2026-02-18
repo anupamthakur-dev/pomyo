@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+  name="description"
+  content="Pomyo is a modern productivity and focus app built to help you manage tasks, time, and goals efficiently."
+/>
+<meta name="robots" content="index, follow" />
+
 
     <link rel="icon" type="image/svg+xml" href="/pomyoLogo.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,7 +18,20 @@
     <title>Pomyo</title>
   </head>
   <body>
-    <div id="root"></div>
+    <noscript>
+    Pomyo is a productivity and focus application. Enable JavaScript to use the app.
+  </noscript>
+    <div id="root">
+      <header>
+    <h1>Pomyo – Productivity & Focus App</h1>
+  </header>
+  <main>
+    <p>
+      Pomyo is a modern productivity application designed to help users focus,
+      manage tasks, and improve daily efficiency.
+    </p>
+  </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
   const saved = localStorage.getItem("theme");
