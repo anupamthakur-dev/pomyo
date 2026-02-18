@@ -1,4 +1,5 @@
 #root {
+  display: none;
   max-width: 1440px;
   height: 100%;
   flex-grow: 1;
