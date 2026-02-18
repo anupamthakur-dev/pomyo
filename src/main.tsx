@@ -15,7 +15,10 @@ import { SettingsHydrationGate } from "./components/SettingHydrationGate.tsx";
 import PomodoroAudioEffects from "./components/PomodoroAudioEffect.tsx";
 import NotifyHost from "./components/NotifyHost.tsx";
 
-createRoot(document.getElementById("root")!).render(
+const rootEl = document.getElementById("root")!;
+rootEl.style.display = "block";
+
+createRoot(rootEl).render(
   <StrictMode>
     <ThemeProvider>
       <TomatoProvider>
